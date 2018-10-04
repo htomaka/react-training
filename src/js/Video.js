@@ -17,6 +17,10 @@ class Video extends Component {
         }, 10000)
     }
 
+    shouldComponentUpdate(prevProps, prevState) {
+        return prevState.video.id !== this.state.video.id;
+    }
+
     render() {
         const {file, title, description} = this.state.video;
         const style = {
