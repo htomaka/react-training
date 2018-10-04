@@ -1,13 +1,10 @@
 import React from "react";
 import PropTypes from 'prop-types';
+import {Movie} from "./models/Movie";
 
 
 VideoItem.propTypes = {
-    video: PropTypes.shape({
-        thumbnail: PropTypes.string,
-        title: PropTypes.string,
-        description: PropTypes.string
-    })
+    video: PropTypes.instanceOf(Movie)
 };
 
 function VideoItem({video}) {

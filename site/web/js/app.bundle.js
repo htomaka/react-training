@@ -216,14 +216,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _models_Movie__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./models/Movie */ "./js/models/Movie.js");
+
 
 
 VideoItem.propTypes = {
-  video: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.shape({
-    thumbnail: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
-    title: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string,
-    description: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.string
-  })
+  video: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.instanceOf(_models_Movie__WEBPACK_IMPORTED_MODULE_2__["Movie"])
 };
 
 function VideoItem(_ref) {
