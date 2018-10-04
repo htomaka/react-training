@@ -143,9 +143,14 @@ function (_Component) {
 
       setInterval(function () {
         _this2.setState({
-          video: _services_movies__WEBPACK_IMPORTED_MODULE_1__["next"]()
+          video: _services_movies__WEBPACK_IMPORTED_MODULE_1__["fetchRandom"]()
         });
       }, 10000);
+    }
+  }, {
+    key: "shouldComponentUpdate",
+    value: function shouldComponentUpdate(prevProps, prevState) {
+      return prevState.video.id !== this.state.video.id;
     }
   }, {
     key: "render",
@@ -295,7 +300,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_VideoList__WEBPACK_IMPORTED_MODULE_2__["default"], null), document.getElementById('appContainer'));
+react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Video__WEBPACK_IMPORTED_MODULE_3__["default"], null), document.getElementById('appContainer'));
 
 /***/ }),
 
@@ -329,12 +334,13 @@ var Movie = function Movie(title, description, videoUrl, thumbnailUrl) {
 /*!*******************************!*\
   !*** ./js/services/movies.js ***!
   \*******************************/
-/*! exports provided: fetch, next */
+/*! exports provided: fetch, fetchRandom, next */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetch", function() { return fetch; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchRandom", function() { return fetchRandom; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "next", function() { return next; });
 /* harmony import */ var _models_Movie__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../models/Movie */ "./js/models/Movie.js");
 
@@ -344,6 +350,11 @@ var activeVidIndex = 0;
 
 function fetch() {
   return movies;
+}
+
+function fetchRandom() {
+  var index = Math.floor(Math.random() * Math.floor(movies.length));
+  return movies[index];
 }
 
 function next() {

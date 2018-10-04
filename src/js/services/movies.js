@@ -14,6 +14,11 @@ function fetch(){
     return movies;
 }
 
+function fetchRandom(){
+    const index = (Math.floor(Math.random() * Math.floor(movies.length)));
+    return movies[index];
+}
+
 function next(){
     activeVidIndex = (activeVidIndex + 1) % movies.length;
     return movies[activeVidIndex];
@@ -21,5 +26,6 @@ function next(){
 
 export {
     fetch,
+    fetchRandom,
     next
 };

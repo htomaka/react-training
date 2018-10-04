@@ -12,7 +12,7 @@ class Video extends Component {
     componentDidMount() {
         setInterval(() => {
             this.setState({
-                video: movies.next()
+                video: movies.fetchRandom()
             });
         }, 10000)
     }

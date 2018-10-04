@@ -4,6 +4,6 @@ import VideoList from "./VideoList";
 import Video from "./Video";
 
 ReactDOM.render(
-    <VideoList />,
+    <Video />,
     document.getElementById('appContainer')
 );
