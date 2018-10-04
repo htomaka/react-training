@@ -143,7 +143,7 @@ function (_Component) {
 
       setInterval(function () {
         _this2.setState({
-          video: _services_movies__WEBPACK_IMPORTED_MODULE_1__["fetchRandom"]()
+          video: _services_movies__WEBPACK_IMPORTED_MODULE_1__["next"]()
         });
       }, 10000);
     }
@@ -253,29 +253,31 @@ function (_Component) {
         className: "col-lg-12"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
         className: "media-list"
-      }, this.state.videos.map(function (vid) {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
-          key: vid.id,
-          className: "media"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "media-left"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
-          className: "media-object",
-          alt: "cat",
-          src: vid.thumbnail,
-          width: "246",
-          height: "138"
-        })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "media-body"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", {
-          className: "media-heading"
-        }, vid.title), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, vid.description)));
-      }))));
+      }, this.state.videos.map(renderVid))));
     }
   }]);
 
   return VideoList;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+function renderVid(vid) {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+    key: vid.id,
+    className: "media"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "media-left"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+    className: "media-object",
+    alt: "cat",
+    src: vid.thumbnail,
+    width: "246",
+    height: "138"
+  })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "media-body"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", {
+    className: "media-heading"
+  }, vid.title), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, vid.description)));
+}
 
 /* harmony default export */ __webpack_exports__["default"] = (VideoList);
 
@@ -300,7 +302,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Video__WEBPACK_IMPORTED_MODULE_3__["default"], null), document.getElementById('appContainer'));
+react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_VideoList__WEBPACK_IMPORTED_MODULE_2__["default"], null), document.getElementById('appContainer'));
 
 /***/ }),
 
