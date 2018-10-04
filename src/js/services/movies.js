@@ -1,31 +1,51 @@
+import request from 'superagent';
+import config from 'config';
 import {Movie} from "../models/Movie";
-
-const URL = 'http://localhost/3.1-react-youtube-bootstrap/site/web';
-
-const movies = [
-    new Movie('Movie 1', '', `${URL}/uploads/video1.mp4`, 'http://placeimg.com/246/138/any/sepia'),
-    new Movie('Movie 2', 'desc 2', `${URL}/uploads/video2.mp4`, 'http://placeimg.com/246/138/any/architecture'),
-    new Movie('Movie 3', 'desc 3', `${URL}/uploads/video3.mp4`, 'http://placeimg.com/246/138/any/animals')
-];
 
 let activeVidIndex = 0;
 
-function fetch(){
-    return movies;
+function fetch() {
+    return request.get(`${config.apiPath}/movies`)
+        .then(({body}) => {
+            return body.map(({id, title, description, file}) => new Movie(id, title, description, `uploads/${file}`));
+        });
 }
 
-function fetchRandom(){
-    const index = Math.floor(Math.random() * Math.floor(movies.length));
-    return movies[index];
+function fetchById(id) {
+    return request.get(`${config.apiPath}/movies/${id}`)
+        .then(({body}) => {
+            const {id, title, description, file} = body;
+            return new Movie(id, title, description, `uploads/${file}`);
+        });
 }
 
-function next(){
-    activeVidIndex = (activeVidIndex + 1) % movies.length;
-    return movies[activeVidIndex];
+function fetchComments(id){
+    return request.get(`${config.apiPath}/movies/${id}/comments`)
+        .then(({body}) => {
+            return body;
+        });
+}
+
+function save({title, description, file}) {
+    return request
+        .post(`${config.apiPath}/movies`)
+        .attach('file', file)
+        .field('title', title)
+        .field('description', description)
+        .then(console.log);
+}
+
+function saveComments(id, {content}) {
+    return request
+        .post(`${config.apiPath}/movies/${id}/comments`)
+        .field('content', content)
+        .then(console.log);
 }
 
 export {
     fetch,
-    fetchRandom,
-    next
+    fetchById,
+    fetchComments,
+    save,
+    saveComments
 };

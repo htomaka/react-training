@@ -11,9 +11,12 @@ class VideoList extends Component {
     }
 
     componentDidMount() {
-        this.setState({
-            videos: movies.fetch()
-        })
+        movies.fetch()
+            .then(movies => {
+                this.setState({
+                    videos: movies
+                })
+            })
     }
 
     render() {
@@ -21,7 +24,7 @@ class VideoList extends Component {
             <div className="row marketing">
                 <div className="col-lg-12">
                     <ul className="media-list">
-                        {this.state.videos.map(vid => (<VideoItem key={vid.id} video={vid} />))
+                        {this.state.videos.map(video => (<VideoItem key={video.id} video={video} />))
                         }
                     </ul>
                 </div>

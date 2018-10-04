@@ -1,10 +1,10 @@
 class Movie {
-    constructor(title, description, videoUrl, thumbnailUrl){
-        this.id = String(Math.random() * 10);
+    constructor(id, title, description, videoUrl){
+        this.id = id;
         this.title = title;
         this.description = description;
         this.file = videoUrl;
-        this.thumbnail = thumbnailUrl
+        this.thumbnail = 'http://placeimg.com/246/138/any/sepia'
     }
 }
 

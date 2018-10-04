@@ -1,33 +1,52 @@
 import React, {Component} from 'react';
 import * as movies from './services/movies';
+import VideoComments from "./VideoComments";
+import VideoCommentsForm from "./VideoCommentsForm";
 
 class Video extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            video: movies.fetch()[0]
+            video: {},
+            comments: []
         };
 
         this.player = null;
 
-        this.playNext = this.playNext.bind(this);
+        this.saveComment = this.saveComment.bind(this);
+        this.getComments = this.getComments.bind(this);
     }
 
     componentDidMount() {
-        setInterval(this.playNext, 10000);
-        this.player.play();
+        this.getVideo();
+        this.getComments();
     }
 
-    shouldComponentUpdate(prevProps, prevState) {
-        return prevState.video.id !== this.state.video.id;
+    getVideo() {
+        movies.fetchById('8')
+            .then(movie => {
+                this.setState({
+                    video: movie
+                }, () => {
+                    this.player.play();
+                })
+            });
     }
 
-    playNext() {
-        this.setState({
-            video: movies.next()
-        }, () => {
-            this.player.play();
-        });
+    getComments() {
+        movies.fetchComments('8')
+            .then(comments => {
+                this.setState({
+                    comments: comments
+                })
+            })
+    }
+
+    saveComment({content}) {
+        return movies.saveComments('8', {
+            content: content
+        })
+            .then(this.getComments);
     }
 
     render() {
@@ -51,11 +70,10 @@ class Video extends Component {
                             </video>
                             <h3>{title}</h3>
                             {description && <p>{description}</p>}
-                            <div>
-                                <button className="btn btn-default" onClick={this.playNext}>Play next</button>
-                            </div>
                         </div>
                     </div>
+                    <VideoCommentsForm onSubmit={this.saveComment}/>
+                    <VideoComments comments={this.state.comments}/>
                 </div>
             </div>
         );
