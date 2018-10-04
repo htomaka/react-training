@@ -6,19 +6,28 @@ class Video extends Component {
         super(props);
         this.state = {
             video: movies.fetch()[0]
-        }
+        };
+
+        this.player = null;
+
+        this.playNext = this.playNext.bind(this);
     }
 
     componentDidMount() {
-        setInterval(() => {
-            this.setState({
-                video: movies.next()
-            });
-        }, 10000)
+        setInterval(this.playNext, 10000);
+        this.player.play();
     }
 
     shouldComponentUpdate(prevProps, prevState) {
         return prevState.video.id !== this.state.video.id;
+    }
+
+    playNext() {
+        this.setState({
+            video: movies.next()
+        }, () => {
+            this.player.play();
+        });
     }
 
     render() {
@@ -33,6 +42,7 @@ class Video extends Component {
                     <div className="video-detail">
                         <div className="caption">
                             <video
+                                ref={el => this.player = el}
                                 style={style}
                                 height="300"
                                 controls
@@ -41,6 +51,9 @@ class Video extends Component {
                             </video>
                             <h3>{title}</h3>
                             {description && <p>{description}</p>}
+                            <div>
+                                <button className="btn btn-default" onClick={this.playNext}>Play next</button>
+                            </div>
                         </div>
                     </div>
                 </div>

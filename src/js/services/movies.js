@@ -15,7 +15,7 @@ function fetch(){
 }
 
 function fetchRandom(){
-    const index = (Math.floor(Math.random() * Math.floor(movies.length)));
+    const index = Math.floor(Math.random() * Math.floor(movies.length));
     return movies[index];
 }
 
