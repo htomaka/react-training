@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import * as movies from './services/movies';
+import * as movies from '../services/movies';
 
 class VideoForm extends Component {
     constructor(props) {

@@ -7,9 +7,9 @@ export default function VideoComments({comments}) {
             {
                 comments.map(({id, content}) => {
                     return (
-                        <div className="panel panel-default">
+                        <div key={id} className="panel panel-default">
                             <div className="panel-body">
-                                <h6 key={id}>
+                                <h6>
                                     <small>{content}</small>
                                 </h6>
                             </div>
