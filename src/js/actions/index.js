@@ -12,6 +12,10 @@ export const FETCH_VIDEO_COMMENTS_LOADING = 'FETCH_VIDEO_COMMENTS_LOADING';
 export const FETCH_VIDEO_COMMENTS_SUCCESS = 'FETCH_VIDEO_COMMENTS_SUCCESS';
 export const FETCH_VIDEO_COMMENTS_ERROR = 'FETCH_VIDEO_COMMENTS_ERROR';
 
+export const SAVE_COMMENT_LOADING = 'SAVE_COMMENT_LOADING';
+export const SAVE_COMMENT_SUCCESS = 'SAVE_COMMENT_SUCCESS';
+export const SAVE_COMMENT_ERROR = 'SAVE_COMMENT_ERROR';
+
 function fetchVideos() {
     return function (dispatch, getState) {
         dispatch({
@@ -75,8 +79,30 @@ function fetchVideoComments(videoId) {
     };
 }
 
+function saveComments(videoId, comment) {
+    return function (dispatch, getState) {
+        dispatch({
+            type: SAVE_COMMENT_LOADING
+        });
+        return movies.saveComments(videoId, comment)
+            .then(() => {
+                dispatch({
+                    type: SAVE_COMMENT_SUCCESS,
+                });
+                dispatch(fetchVideoComments(videoId))
+            })
+            .catch(err => {
+                dispatch({
+                    type: SAVE_COMMENT_ERROR,
+                    error: err
+                })
+            })
+    };
+}
+
 export {
     fetchVideos,
     fetchVideo,
-    fetchVideoComments
+    fetchVideoComments,
+    saveComments
 }

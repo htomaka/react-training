@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from 'prop-types';
+import {Link} from "react-router-dom";
 
 
 VideoItem.propTypes = {
@@ -20,7 +21,9 @@ function VideoItem({video}) {
                      height="138"/>
             </div>
             <div className="media-body">
-                <h4 className="media-heading">{video.title}</h4>
+                <Link to={`/videos/${video.id}`}>
+                    <h4 className="media-heading">{video.title}</h4>
+                </Link>
                 <p>{video.description}</p>
             </div>
         </li>

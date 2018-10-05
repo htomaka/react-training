@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
 import * as movies from '../services/movies';
+import {bindActionCreators} from "redux";
+import {push} from 'connected-react-router';
+import {connect} from "react-redux";
 
 class VideoForm extends Component {
     constructor(props) {
@@ -56,7 +59,8 @@ class VideoForm extends Component {
                             description: '',
                             file: null
                         }
-                    })
+                    });
+                    this.props.push('/')
                 });
         });
     }
@@ -121,4 +125,12 @@ function getStyles(isLoading) {
     return isLoading ? 'disabled' : '';
 }
 
-export default VideoForm;
+function mapStateToProps(state) {
+    return {};
+}
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({push}, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(VideoForm);

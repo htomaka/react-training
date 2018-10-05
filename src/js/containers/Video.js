@@ -1,17 +1,15 @@
 import React, {Component} from 'react';
-import * as movies from '../services/movies';
 import VideoComments from "./VideoComments";
 import VideoCommentsForm from "./VideoCommentsForm";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {fetchVideo, fetchVideoComments} from "../actions";
+import {fetchVideo, fetchVideoComments, saveComments} from "../actions";
 
 class Video extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            videoId: 2,
-        };
+
+        this.state = {};
 
         this.player = null;
 
@@ -19,8 +17,8 @@ class Video extends Component {
     }
 
     componentDidMount() {
-        this.props.fetchVideo(this.state.videoId);
-        this.props.fetchVideoComments(this.state.videoId);
+        this.props.fetchVideo(this.props.match.params.id);
+        this.props.fetchVideoComments(this.props.match.params.id);
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -30,13 +28,8 @@ class Video extends Component {
         }
     }
 
-    saveComment({content}) {
-        return movies.saveComments(this.state.videoId, {
-            content: content
-        })
-            .then(() => {
-                this.props.fetchVideoComments(this.state.videoId)
-            });
+    saveComment(comment) {
+        return this.props.saveComments(this.props.match.params.id, comment)
     }
 
 
@@ -64,7 +57,6 @@ class Video extends Component {
                                 {description && <p>{description}</p>}
                             </div>
                         </div>
-                        {this.state.isLoading && 'Loading...'}
                         <VideoCommentsForm onSubmit={this.saveComment}/>
                         <VideoComments comments={this.props.comments}/>
                     </div>
@@ -86,7 +78,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({fetchVideo, fetchVideoComments}, dispatch)
+    return bindActionCreators({fetchVideo, fetchVideoComments, saveComments}, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Video);
