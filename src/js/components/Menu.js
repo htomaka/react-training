@@ -7,10 +7,10 @@ export default function Menu(props){
             <nav className="navbar navbar-inverse navbar-fixed-top">
                 <div className="container">
                     <div className="navbar-header">
-                        <a href="#" className="navbar-brand">
+                        <Link to="/" className="navbar-brand">
                             <i className="glyphicon glyphicon-film" style={{marginRight: '10px'}}></i>
                             Reactube
-                        </a>
+                        </Link>
                     </div>
                     <ul className="nav navbar-nav navbar-right">
                         <li>

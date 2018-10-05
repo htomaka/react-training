@@ -1,0 +1,5 @@
+{
+	"basePath": "/",
+	"apiPath": "http://localhost/3.1-react-youtube-bootstrap/site/web/api",
+	"videoPath": "http://localhost/3.1-react-youtube-bootstrap/site/web/uploads"
+}

@@ -5,7 +5,7 @@ class Movie {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.file = `${config.basePath}/uploads/${videoUrl}`;
+        this.file = `${config.videoPath}/${videoUrl}`;
         this.thumbnail = 'http://placeimg.com/246/138/any/sepia'
     }
 }

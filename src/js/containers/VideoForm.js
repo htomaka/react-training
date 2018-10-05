@@ -50,17 +50,8 @@ class VideoForm extends Component {
             isLoading: true
         }, () => {
             movies.save(this.state.formData)
-                .then(() => {
-                    this.setState({
-                        isSubmitted: true,
-                        isLoading: false,
-                        formData: {
-                            title: '',
-                            description: '',
-                            file: null
-                        }
-                    });
-                    this.props.push('/')
+                .then(movie => {
+                    this.props.push(`/videos/${movie.id}`)
                 });
         });
     }

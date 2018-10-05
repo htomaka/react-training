@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
 import {Switch, Route, withRouter} from 'react-router';
-import VideoList from "./VideoList";
-import Video from "./Video";
-import VideoForm from './VideoForm';
 import Menu from "../components/Menu";
+import routes from '../routes';
 
 class Layout extends Component {
     constructor(props) {
@@ -15,9 +13,11 @@ class Layout extends Component {
             <div className="container">
                 <Menu />
                 <Switch>
-                    <Route exact path="/" component={VideoList}/>
-                    <Route exact path="/videos/new" component={VideoForm}/>
-                    <Route exact path="/videos/:id" component={Video}/>
+                    {
+                        routes.map(route => {
+                            return <Route key={route.path} {...route}/>
+                        })
+                    }
                 </Switch>
             </div>
         );

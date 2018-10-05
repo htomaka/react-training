@@ -5,6 +5,11 @@ import {fetchVideos} from "../actions";
 import {bindActionCreators} from "redux";
 
 class VideoList extends Component {
+
+    static fetchData(){
+        return fetchVideos();
+    }
+
     constructor(props) {
         super(props);
 

@@ -11,7 +11,7 @@ const browserHistory = createBrowserHistory({
     basename: config.basePath
 });
 
-const store = configureStore(browserHistory);
+const store = configureStore(browserHistory, window.__PRELOADED_STATE__);
 
 ReactDOM.render(
     <Provider store={store}>

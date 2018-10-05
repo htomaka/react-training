@@ -6,6 +6,14 @@ import {bindActionCreators} from "redux";
 import {fetchVideo, fetchVideoComments, saveComments} from "../actions";
 
 class Video extends Component {
+
+    static fetchData(store, params) {
+        return Promise.all([
+            fetchVideo(params.id),
+            fetchVideoComments(params.id),
+        ])
+    }
+
     constructor(props) {
         super(props);
 

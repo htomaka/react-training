@@ -21,7 +21,7 @@ function fetchVideos() {
         dispatch({
             type: FETCH_VIDEOS_LOADING
         });
-        movies.fetch()
+        return movies.fetch()
             .then(movies => {
                 dispatch({
                     type: FETCH_VIDEOS_SUCCESS,
@@ -42,7 +42,7 @@ function fetchVideo(id) {
         dispatch({
             type: FETCH_VIDEO_LOADING
         });
-        movies.fetchById(id)
+        return movies.fetchById(id)
             .then(movies => {
                 dispatch({
                     type: FETCH_VIDEO_SUCCESS,
@@ -63,7 +63,7 @@ function fetchVideoComments(videoId) {
         dispatch({
             type: FETCH_VIDEO_COMMENTS_LOADING
         });
-        movies.fetchComments(videoId)
+        return movies.fetchComments(videoId)
             .then(comments => {
                 dispatch({
                     type: FETCH_VIDEO_COMMENTS_SUCCESS,

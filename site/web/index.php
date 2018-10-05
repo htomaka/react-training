@@ -30,18 +30,18 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 $app->get('/', function () use ($app) {
     return $app['twig']->render('index.html.twig', array());
 });
-$app->get('/movies', function () use ($app) {
+$app->get('/videos', function () use ($app) {
     return $app['twig']->render('index.html.twig', array());
 });
-$app->get('/movies/{id}', function () use ($app) {
+$app->get('/videos/{id}', function () use ($app) {
     return $app['twig']->render('index.html.twig', array());
 });
 
-$app->get('/api/movies', function () use ($app) {
+$app->get('/api/videos', function () use ($app) {
     return $app->json($app['db']->fetchAll('SELECT * FROM video WHERE 1 ORDER BY created_at DESC'))->setEncodingOptions(JSON_NUMERIC_CHECK);
 });
 
-$app->post('/api/movies', function (Request $request) use ($app) {
+$app->post('/api/videos', function (Request $request) use ($app) {
     if ($request->files->count() && $request->files->getIterator()->current())
     {
         $file = $request->files->getIterator()->current();
@@ -62,11 +62,11 @@ $app->post('/api/movies', function (Request $request) use ($app) {
     return $app->json(0, 400);
 });
 
-$app->get('/api/movies/{id}', function ($id) use ($app) {
+$app->get('/api/videos/{id}', function ($id) use ($app) {
     return $app->json($app['db']->fetchAssoc('SELECT * FROM video WHERE id = ?', array((int) $id)));
 });
 
-$app->post('/api/movies/{id}/comments', function (Request $request, $id) use ($app) {
+$app->post('/api/videos/{id}/comments', function (Request $request, $id) use ($app) {
     $comment = array(
         'video_id' => (int) $id,
         'content' => $request->get('content')
@@ -78,11 +78,11 @@ $app->post('/api/movies/{id}/comments', function (Request $request, $id) use ($a
     return $app->json(0, 400);
 });
 
-$app->get('/api/movies/{id}/comments', function (Request $request, $id) use ($app) {
+$app->get('/api/videos/{id}/comments', function (Request $request, $id) use ($app) {
 	return $app->json($app['db']->fetchAll('SELECT * FROM comment WHERE video_id = ? ORDER BY created_at DESC', array((int) $id)));
 });
 
-$app->post('/api/movies/{id}/likes', function ($id) use ($app) {
+$app->post('/api/videos/{id}/likes', function ($id) use ($app) {
     if ($app['db']->update('video', array('likes' => 1, 'dislikes' => 0), array('id' => (int) $id)))
     {
         return $app->json(1);
@@ -90,7 +90,7 @@ $app->post('/api/movies/{id}/likes', function ($id) use ($app) {
     return $app->json(0, 400);
 });
 
-$app->post('/api/movies/{id}/dislikes', function ($id) use ($app) {
+$app->post('/api/videos/{id}/dislikes', function ($id) use ($app) {
     if ($app['db']->update('video', array('likes' => 0, 'dislikes' => 1), array('id' => (int) $id)))
     {
         return $app->json(1);
