@@ -136,7 +136,9 @@ function (_Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Video).call(this, props));
     _this.state = {
       video: {},
-      comments: []
+      videoId: 2,
+      comments: [],
+      isLoading: false
     };
     _this.player = null;
     _this.saveComment = _this.saveComment.bind(_assertThisInitialized(_assertThisInitialized(_this)));
@@ -155,9 +157,11 @@ function (_Component) {
     value: function getVideo() {
       var _this2 = this;
 
-      _services_movies__WEBPACK_IMPORTED_MODULE_1__["fetchById"]('8').then(function (movie) {
+      this.setIsLoading();
+      return _services_movies__WEBPACK_IMPORTED_MODULE_1__["fetchById"](this.state.videoId).then(function (movie) {
         _this2.setState({
-          video: movie
+          video: movie,
+          isLoading: false
         }, function () {
           _this2.player.play();
         });
@@ -168,9 +172,11 @@ function (_Component) {
     value: function getComments() {
       var _this3 = this;
 
-      _services_movies__WEBPACK_IMPORTED_MODULE_1__["fetchComments"]('8').then(function (comments) {
+      this.setIsLoading();
+      return _services_movies__WEBPACK_IMPORTED_MODULE_1__["fetchComments"](this.state.videoId).then(function (comments) {
         _this3.setState({
-          comments: comments
+          comments: comments,
+          isLoading: false
         });
       });
     }
@@ -178,9 +184,17 @@ function (_Component) {
     key: "saveComment",
     value: function saveComment(_ref) {
       var content = _ref.content;
-      return _services_movies__WEBPACK_IMPORTED_MODULE_1__["saveComments"]('8', {
+      this.setIsLoading();
+      return _services_movies__WEBPACK_IMPORTED_MODULE_1__["saveComments"](this.state.videoId, {
         content: content
       }).then(this.getComments);
+    }
+  }, {
+    key: "setIsLoading",
+    value: function setIsLoading() {
+      this.setState({
+        isLoading: true
+      });
     }
   }, {
     key: "render",
@@ -196,7 +210,7 @@ function (_Component) {
         backgroundColor: "black"
       };
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "row marketing"
+        className: getStyles(this.state.isLoading)
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "col-sm-12 col-md-12"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -211,7 +225,7 @@ function (_Component) {
         height: "300",
         controls: true,
         src: file
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, title), description && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, description))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_VideoCommentsForm__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, title), description && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, description))), this.state.isLoading && 'Loading...', react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_VideoCommentsForm__WEBPACK_IMPORTED_MODULE_3__["default"], {
         onSubmit: this.saveComment
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_VideoComments__WEBPACK_IMPORTED_MODULE_2__["default"], {
         comments: this.state.comments
@@ -221,6 +235,10 @@ function (_Component) {
 
   return Video;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+function getStyles(isLoading) {
+  return "row marketing ".concat(isLoading ? 'disabled' : '');
+}
 
 /* harmony default export */ __webpack_exports__["default"] = (Video);
 
@@ -242,18 +260,21 @@ __webpack_require__.r(__webpack_exports__);
 function VideoComments(_ref) {
   var comments = _ref.comments;
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "comments"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", null, "Commentaires: "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "panel panel-default"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "panel-body"
-  }, comments.map(function (_ref2) {
+    className: "comments",
+    style: {
+      marginTop: '32px'
+    }
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h4", null, "Commentaires: "), comments.map(function (_ref2) {
     var id = _ref2.id,
         content = _ref2.content;
-    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "panel panel-default"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      className: "panel-body"
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h6", {
       key: id
-    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("small", null, content));
-  }))));
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("small", null, content))));
+  }));
 }
 
 /***/ }),
@@ -331,7 +352,10 @@ function (_Component) {
     key: "render",
     value: function render() {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
-        onSubmit: this.handleSubmit
+        onSubmit: this.handleSubmit,
+        style: {
+          marginTop: '32px'
+        }
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "form-group"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
@@ -412,7 +436,8 @@ function (_Component) {
         description: '',
         file: null
       },
-      isSubmitted: false
+      isSubmitted: false,
+      isLoading: false
     };
     _this.handleDescChange = _this.handleDescChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.handleTitleChange = _this.handleTitleChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
@@ -447,11 +472,13 @@ function (_Component) {
       this.setState({
         formData: _objectSpread({}, this.state.formData, {
           file: this.fileInput.files[0]
-        })
+        }),
+        isLoading: true
       }, function () {
         _services_movies__WEBPACK_IMPORTED_MODULE_1__["save"](_this2.state.formData).then(function () {
           _this2.setState({
             isSubmitted: true,
+            isLoading: false,
             formData: {
               title: '',
               description: '',
@@ -468,10 +495,11 @@ function (_Component) {
 
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container"
-      }, this.state.isSubmitted ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, this.state.isLoading && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "Loading..."), this.state.isSubmitted ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "alert alert-success"
       }, "La vid\xE9o a bien \xE9t\xE9 ajout\xE9e") : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
-        onSubmit: this.handleSubmit
+        onSubmit: this.handleSubmit,
+        className: getStyles(this.state.isLoading)
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "form-group"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
@@ -520,6 +548,10 @@ function (_Component) {
 
   return VideoForm;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+function getStyles(isLoading) {
+  return isLoading ? 'disabled' : '';
+}
 
 /* harmony default export */ __webpack_exports__["default"] = (VideoForm);
 
@@ -694,7 +726,11 @@ react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render(react__WEBPACK_IMPORTED_
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Movie", function() { return Movie; });
+/* harmony import */ var config__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! config */ "config");
+/* harmony import */ var config__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(config__WEBPACK_IMPORTED_MODULE_0__);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+
 
 var Movie = function Movie(id, title, description, videoUrl) {
   _classCallCheck(this, Movie);
@@ -702,7 +738,7 @@ var Movie = function Movie(id, title, description, videoUrl) {
   this.id = id;
   this.title = title;
   this.description = description;
-  this.file = videoUrl;
+  this.file = "".concat(config__WEBPACK_IMPORTED_MODULE_0___default.a.basePath, "/uploads/").concat(videoUrl);
   this.thumbnail = 'http://placeimg.com/246/138/any/sepia';
 };
 
@@ -732,37 +768,34 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var activeVidIndex = 0;
 
 function fetch() {
   return superagent__WEBPACK_IMPORTED_MODULE_0___default.a.get("".concat(config__WEBPACK_IMPORTED_MODULE_1___default.a.apiPath, "/movies")).then(function (_ref) {
     var body = _ref.body;
-    return body.map(function (_ref2) {
-      var id = _ref2.id,
-          title = _ref2.title,
-          description = _ref2.description,
-          file = _ref2.file;
-      return new _models_Movie__WEBPACK_IMPORTED_MODULE_2__["Movie"](id, title, description, "uploads/".concat(file));
-    });
+    return body.map(makeMovie);
   });
 }
 
 function fetchById(id) {
-  return superagent__WEBPACK_IMPORTED_MODULE_0___default.a.get("".concat(config__WEBPACK_IMPORTED_MODULE_1___default.a.apiPath, "/movies/").concat(id)).then(function (_ref3) {
-    var body = _ref3.body;
-    var id = body.id,
-        title = body.title,
-        description = body.description,
-        file = body.file;
-    return new _models_Movie__WEBPACK_IMPORTED_MODULE_2__["Movie"](id, title, description, "uploads/".concat(file));
+  return superagent__WEBPACK_IMPORTED_MODULE_0___default.a.get("".concat(config__WEBPACK_IMPORTED_MODULE_1___default.a.apiPath, "/movies/").concat(id)).then(function (_ref2) {
+    var body = _ref2.body;
+    return makeMovie(body);
   });
 }
 
 function fetchComments(id) {
-  return superagent__WEBPACK_IMPORTED_MODULE_0___default.a.get("".concat(config__WEBPACK_IMPORTED_MODULE_1___default.a.apiPath, "/movies/").concat(id, "/comments")).then(function (_ref4) {
-    var body = _ref4.body;
+  return superagent__WEBPACK_IMPORTED_MODULE_0___default.a.get("".concat(config__WEBPACK_IMPORTED_MODULE_1___default.a.apiPath, "/movies/").concat(id, "/comments")).then(function (_ref3) {
+    var body = _ref3.body;
     return body;
   });
+}
+
+function makeMovie(_ref4) {
+  var id = _ref4.id,
+      title = _ref4.title,
+      description = _ref4.description,
+      file = _ref4.file;
+  return new _models_Movie__WEBPACK_IMPORTED_MODULE_2__["Movie"](id, title, description, file);
 }
 
 function save(_ref5) {

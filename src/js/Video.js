@@ -8,7 +8,9 @@ class Video extends Component {
         super(props);
         this.state = {
             video: {},
-            comments: []
+            videoId: 2,
+            comments: [],
+            isLoading: false
         };
 
         this.player = null;
@@ -23,10 +25,12 @@ class Video extends Component {
     }
 
     getVideo() {
-        movies.fetchById('8')
+        this.setIsLoading();
+        return movies.fetchById(this.state.videoId)
             .then(movie => {
                 this.setState({
-                    video: movie
+                    video: movie,
+                    isLoading: false
                 }, () => {
                     this.player.play();
                 })
@@ -34,19 +38,28 @@ class Video extends Component {
     }
 
     getComments() {
-        movies.fetchComments('8')
+        this.setIsLoading();
+        return movies.fetchComments(this.state.videoId)
             .then(comments => {
                 this.setState({
-                    comments: comments
+                    comments: comments,
+                    isLoading: false
                 })
             })
     }
 
     saveComment({content}) {
-        return movies.saveComments('8', {
+        this.setIsLoading();
+        return movies.saveComments(this.state.videoId, {
             content: content
         })
             .then(this.getComments);
+    }
+
+    setIsLoading() {
+        this.setState({
+            isLoading: true
+        });
     }
 
     render() {
@@ -56,7 +69,7 @@ class Video extends Component {
             backgroundColor: "black"
         };
         return (
-            <div className="row marketing">
+            <div className={getStyles(this.state.isLoading)}>
                 <div className="col-sm-12 col-md-12">
                     <div className="video-detail">
                         <div className="caption">
@@ -72,12 +85,17 @@ class Video extends Component {
                             {description && <p>{description}</p>}
                         </div>
                     </div>
+                    { this.state.isLoading && 'Loading...'}
                     <VideoCommentsForm onSubmit={this.saveComment}/>
                     <VideoComments comments={this.state.comments}/>
                 </div>
             </div>
         );
     }
+}
+
+function getStyles(isLoading) {
+    return `row marketing ${isLoading ? 'disabled' : ''}`;
 }
 
 export default Video;

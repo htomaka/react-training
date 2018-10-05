@@ -78,3 +78,8 @@ a, a:hover {
 a h4, a:hover h4 {
 	color: #167ac6;
 }
+
+.disabled {
+	opacity: .7;
+	pointer-events: none;
+}

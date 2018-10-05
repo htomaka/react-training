@@ -10,7 +10,8 @@ class VideoForm extends Component {
                 description: '',
                 file: null
             },
-            isSubmitted: false
+            isSubmitted: false,
+            isLoading: false
         };
 
         this.handleDescChange = this.handleDescChange.bind(this);
@@ -42,12 +43,14 @@ class VideoForm extends Component {
             formData: {
                 ...this.state.formData,
                 file: this.fileInput.files[0]
-            }
+            },
+            isLoading: true
         }, () => {
             movies.save(this.state.formData)
                 .then(() => {
                     this.setState({
                         isSubmitted: true,
+                        isLoading: false,
                         formData: {
                             title: '',
                             description: '',
@@ -61,11 +64,12 @@ class VideoForm extends Component {
     render() {
         return (
             <div className="container">
+                {this.state.isLoading && <p>Loading...</p>}
                 {
                     this.state.isSubmitted ?
                         (<div className="alert alert-success">La vidéo a bien été ajoutée</div>) :
                         (
-                            <form onSubmit={this.handleSubmit}>
+                            <form onSubmit={this.handleSubmit} className={getStyles(this.state.isLoading)}>
                                 <div className="form-group">
                                     <label htmlFor="title">Titre</label>
                                     <input
@@ -111,6 +115,10 @@ class VideoForm extends Component {
             </div>
         );
     }
+}
+
+function getStyles(isLoading) {
+    return isLoading ? 'disabled' : '';
 }
 
 export default VideoForm;

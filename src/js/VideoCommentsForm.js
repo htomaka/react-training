@@ -29,7 +29,7 @@ class VideoCommentsForm extends Component {
 
     render() {
         return (
-            <form onSubmit={this.handleSubmit}>
+            <form onSubmit={this.handleSubmit} style={{marginTop: '32px'}}>
                 <div className="form-group">
                     <label htmlFor="content">Ajouter un commentaire</label>
                     <textarea
